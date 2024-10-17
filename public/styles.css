@@ -55,15 +55,14 @@ button:hover {
 }
 
 .collapsible {
-    background-color: #f1f1f1;
-    color: #444;
-    cursor: pointer;
+    background-color: #007bff;
+    color: white;
     padding: 10px;
-    width: 100%;
     border: none;
+    cursor: pointer;
     text-align: left;
-    outline: none;
-    font-size: 15px;
+    width: 100%;
+    font-size: 16px;
 }
 
 .content {
@@ -71,15 +70,24 @@ button:hover {
     overflow: hidden;
 }
 
+.book-details {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.table-container {
+    overflow-x: auto; /* Allow horizontal scrolling */
+}
+
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
+    margin-top: 10px;
 }
 
 th, td {
     border: 1px solid #ddd;
-    padding: 12px;  
+    padding: 12px;
     text-align: left;
 }
 
@@ -100,8 +108,6 @@ th {
 }
 
 @media (max-width: 600px) {
-
-
     body {
         padding: 10px;
     }
@@ -113,13 +119,38 @@ th {
     button {
         padding: 8px 12px;
         font-size: 14px;
+        width: 100%; /* Full width buttons */
+        margin-top: 10px;
+    }
+
+    .table-container {
+        overflow-x: auto; /* Enable horizontal scrolling */
     }
 
     table {
-        font-size: 14px;
+        display: block; /* Use block display for better control */
+        width: 100%;
+        overflow: auto; /* Allow horizontal scroll */
+    }
+
+    thead {
+        display: block; /* Keep thead fixed at the top */
+    }
+
+    tbody {
+        display: block; /* Allow tbody to scroll */
+        max-height: 300px; /* Set a max height for scrolling */
+        overflow-y: auto; /* Enable vertical scrolling */
+    }
+
+    tr {
+        display: table; /* Keep table row formatting */
+        width: 100%; /* Full width for table rows */
+        table-layout: fixed; /* Prevent overflow */
     }
 
     th, td {
-        padding: 10px; /* Reduced padding for smaller screens */
+        min-width: 120px; /* Ensure cells have a minimum width */
+        word-wrap: break-word; /* Allow text to wrap */
     }
 }
