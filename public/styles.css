@@ -2,7 +2,7 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 20px;
-    background-color: #f4f4f4;
+    background-color: pink; /* Changed to pink */
 }
 
 .container {
@@ -43,7 +43,7 @@ h1 {
 button {
     padding: 10px 15px;
     border: none;
-    background-color: #007bff;
+    background-color: green; /* Changed to green */
     color: white;
     border-radius: 5px;
     cursor: pointer;
@@ -51,11 +51,11 @@ button {
 }
 
 button:hover {
-    background-color: #0056b3;
+    background-color: darkgreen; /* Darker green on hover */
 }
 
 .collapsible {
-    background-color: #007bff;
+    background-color: green; /* Changed to green */
     color: white;
     padding: 10px;
     border: none;
@@ -92,14 +92,18 @@ th, td {
 }
 
 th {
-    background-color: #f2f2f2;
-    color: #333;
+    background-color: green; /* Table header color */
+    color: white; /* Text color for header */
+}
+
+td {
+    background-color: #e0f7e0; /* Light green background for table cells */
 }
 
 .edit, .remove {
     background: none;
     border: none;
-    color: #007bff;
+    color: #007bff; /* Keep this color for edit/remove buttons */
     cursor: pointer;
 }
 
@@ -153,4 +157,22 @@ th {
         min-width: 120px; /* Ensure cells have a minimum width */
         word-wrap: break-word; /* Allow text to wrap */
     }
+}
+
+#addUserButton {
+    background-color: black; /* Black background */
+    color: white; /* White text */
+    padding: 10px 15px; /* Adjust padding as needed */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#addUserButton:hover {
+    background-color: #333; /* Darker black on hover */
+}
+
+#addUserButton i {
+    margin-right: 5px; /* Space between icon and text */
 }
