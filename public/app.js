@@ -62,8 +62,8 @@ $(document).ready(function () {
             <td>${yop}</td>
             <td>${isbn}</td>
             <td>
-                <button class="edit">Edit</button>
-                <button class="remove">Remove</button>
+                <button class="edit"><i class="fas fa-edit"></i></button>
+                <button class="remove"><i class="fas fa-trash"></i></button>
             </td>
         </tr>`;
 
