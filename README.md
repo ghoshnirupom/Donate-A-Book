@@ -19,7 +19,7 @@ This web application allows users to manage their personal information (name, ph
 2. Install dependencies: npm install
 3. Start the application : npm start
 
-Usage
+Usage :
 Enter your name, phone number, and email in the respective fields.
 Click the "+" button to add a new record.
 Use the "edit" button to make existing rows editable, and the "delete" button to remove records.
@@ -44,12 +44,12 @@ The exported JSON format includes:
   ]
 }
 
-Contributing
+Contributing :
 Contributions are welcome! Please fork the repository and create a pull request for any enhancements or bug fixes.
 
-License
+License :
 This project is licensed under the MIT License.
 
-Acknowledgments
+Acknowledgments :
 React for the front-end framework.
 Bootstrap for responsive design components.
