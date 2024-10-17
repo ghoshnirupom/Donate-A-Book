@@ -1,5 +1,5 @@
 // server.js
-
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -10,7 +10,7 @@ app.use(bodyParser.json());
 app.use(cors());
 app.use(express.static('public'));
 
-mongoose.connect('mongodb+srv://user134:AVVQEbaGnOsMZNHc@cluster0.2mpjwi7.mongodb.net/')
+mongoose.connect(process.env.MONGODB_URI)
 .then(() => console.log('MongoDB connected...'))
 .catch(err => console.log(err));
 
