@@ -1,4 +1,3 @@
-// server.js
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
@@ -10,6 +9,7 @@ app.use(bodyParser.json());
 app.use(cors());
 app.use(express.static('public'));
 
+// Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI)
 .then(() => console.log('MongoDB connected...'))
 .catch(err => console.log(err));
@@ -44,7 +44,6 @@ app.get('/api/users', async (req, res) => {
 app.post('/api/users', async (req, res) => {
     const { name, phone, email, books } = req.body;
 
-
     // Validate input
     const errors = {};
     if (!name) errors.name = 'Name is required';
@@ -62,6 +61,28 @@ app.post('/api/users', async (req, res) => {
     }
 });
 
+// Update User Endpoint
+app.put('/api/users/:id', async (req, res) => {
+    const { name, phone, email, books } = req.body;
+    try {
+        const updatedUser = await User.findByIdAndUpdate(
+            req.params.id,
+            { name, phone, email, books },
+            { new: true, runValidators: true }
+        );
+        if (!updatedUser) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+        res.json(updatedUser);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+});
+
+
+
+
+// Delete User Endpoint
 app.delete('/api/users/:id', async (req, res) => {
     await User.findByIdAndDelete(req.params.id);
     res.sendStatus(204);

@@ -31,28 +31,43 @@ $(document).ready(function () {
         $('#userName').val('');
         $('#userPhone').val('');
         $('#userEmail').val('');
-        alert("User added! You can now add books.");
+
+        // Send user data to server
+        $.ajax({
+            url: '/api/users',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(user),
+            success: function (response) {
+                alert("User added successfully!");
+                user._id = response._id; // Update user object with the returned ID
+                console.log("User ID after creation:", user._id);
+            },
+            error: function (error) {
+                alert("Error adding user: " + error.responseJSON.error);
+            }
+        });
     });
 
     // Add Book Button Click Event
     $('#addBookButton').click(function () {
-        if (!user.name) {
+        if (!user._id) {
             alert("Please add a user first!");
             return;
         }
-
+    
         const bookTitle = prompt("Enter book title:");
         const author = prompt("Enter author name:");
         const genre = prompt("Enter genre:");
         const yop = prompt("Enter year of publication:");
         const isbn = prompt("Enter ISBN:");
-
+    
         // Validate book input
         if (!bookTitle || !author || !genre || !yop || !isbn) {
             alert("All fields are required!");
             return;
         }
-
+    
         bookCount++;
         const bookRow = `<tr>
             <td>${bookCount}</td>
@@ -66,9 +81,9 @@ $(document).ready(function () {
                 <button class="remove"><i class="fas fa-trash"></i></button>
             </td>
         </tr>`;
-
+    
         $('#bookTable tbody').append(bookRow);
-
+    
         // Store book info in user object
         user.books.push({
             sno: bookCount,
@@ -78,8 +93,24 @@ $(document).ready(function () {
             yop: yop,
             isbn: isbn
         });
-    });
 
+        console.log("User ID before update:", user._id);
+    
+        // Update the user on the server
+        $.ajax({
+            url: `/api/users/${user._id}`, 
+            method: 'PUT',  
+            contentType: 'application/json',
+            data: JSON.stringify(user),
+            success: function (response) {
+                console.log("User updated with new book.");
+            },
+            error: function (error) {
+                alert("Error updating user: " + error.responseJSON.error);
+            }
+        });
+    });
+    
     // Delegate click events for Edit and Remove buttons
     $('#bookTable').on('click', '.remove', function () {
         const row = $(this).closest('tr');
