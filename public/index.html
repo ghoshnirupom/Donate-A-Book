@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donate a Book</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Donate a Book</h1>
+        <div class="user-info">
+            <label>Name:</label>
+            <input type="text" id="userName" placeholder="Enter your name" required>
+            <label>Phone:</label>
+            <input type="text" id="userPhone" placeholder="Enter your phone" required>
+            <label>Email:</label>
+            <input type="email" id="userEmail" placeholder="Enter your email" required>
+            <button id="addUserButton">+</button>
+        </div>
+
+        <div class="book-details">
+            <button class="collapsible">Book Details</button>
+            <div class="content">
+                <table id="bookTable">
+                    <thead>
+                        <tr>
+                            <th>S.No</th>
+                            <th>Book Title</th>
+                            <th>Author</th>
+                            <th>Genre</th>
+                            <th>Year of Publication</th>
+                            <th>ISBN</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Book rows will be dynamically inserted here -->
+                    </tbody>
+                </table>
+                <button id="addBookButton">Add Book</button>
+                <button id="dumpStateButton">Dump State</button>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
