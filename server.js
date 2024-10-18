@@ -11,23 +11,23 @@ app.use(express.static('public'));
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI)
-.then(() => console.log('MongoDB connected...'))
-.catch(err => console.log(err));
+    .then(() => console.log('MongoDB connected...'))
+    .catch(err => console.error('MongoDB connection error:', err));
 
 // Book Schema
 const BookSchema = new mongoose.Schema({
-    sno: Number,
-    booktitle: String,
-    author: String,
-    genre: String,
-    yop: String,
-    isbn: String
+    sno: { type: Number, required: true, unique: true },
+    booktitle: { type: String, required: true },
+    author: { type: String, required: true },
+    genre: { type: String, required: true },
+    yop: { type: Date, required: true }, 
+    isbn: { type: String, required: true }
 });
 
 // User Schema
 const UserSchema = new mongoose.Schema({
     name: { type: String, required: true },
-    phone: { type: String, required: true },
+    phone: { type: Number, required: true },
     email: { type: String, required: true },
     books: [BookSchema]
 });
@@ -37,8 +37,12 @@ const User = mongoose.model('User', UserSchema);
 
 // API Endpoints
 app.get('/api/users', async (req, res) => {
-    const users = await User.find();
-    res.json(users);
+    try {
+        const users = await User.find();
+        res.json(users);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to fetch users' });
+    }
 });
 
 app.post('/api/users', async (req, res) => {
@@ -53,6 +57,16 @@ app.post('/api/users', async (req, res) => {
     if (Object.keys(errors).length) return res.status(400).json(errors);
 
     try {
+        // Check for existing user
+        let existingUser = await User.findOne({ email });
+        if (existingUser) {
+            // Update existing user
+            existingUser.books = [...existingUser.books, ...books]; // Add new books if any
+            await existingUser.save();
+            return res.status(200).json(existingUser);
+        }
+
+        // Create a new user if not found
         const newUser = new User({ name, phone, email, books });
         await newUser.save();
         res.status(201).json(newUser);
@@ -79,32 +93,61 @@ app.put('/api/users/:id', async (req, res) => {
     }
 });
 
+app.delete('/api/users/:userId/books/:bookId', async (req, res) => {
+    try {
+        const userId = req.params.userId;
+        const bookId = req.params.bookId;
 
+        // Find the user and remove the book
+        const user = await User.findById(userId);
+        user.books = user.books.filter(book => book._id.toString() !== bookId);
 
+        // Reassign serial numbers
+        user.books.forEach((book, index) => {
+            book.sno = index + 1; // Reassign sno based on the index
+        });
 
-// Delete User Endpoint
-app.delete('/api/users/:id', async (req, res) => {
-    await User.findByIdAndDelete(req.params.id);
-    res.sendStatus(204);
+        // Save updated user
+        await user.save();
+
+        res.status(200).json({ message: "Book deleted successfully", user });
+    } catch (error) {
+        res.status(500).json({ error: "An error occurred while deleting the book" });
+    }
 });
+
 
 // Endpoint to dump the state
 app.get('/api/state', async (req, res) => {
-    const users = await User.find();
-    const state = users.map(user => ({
-        name: user.name,
-        phone: user.phone,
-        email: user.email,
-        books: user.books.map((book, index) => ({
-            sno: index + 1, // Auto-incrementing number
-            booktitle: book.booktitle,
-            author: book.author,
-            genre: book.genre,
-            yop: book.yop,
-            isbn: book.isbn
-        }))
-    }));
-    res.json(state);
+    try {
+        const users = await User.find();
+        const state = users.map(user => {
+            // Reassign sno values based on the current books array
+            return {
+                name: user.name,
+                phone: user.phone,
+                email: user.email,
+                books: user.books.map((book, index) => ({
+                    sno: index + 1, // Auto-incrementing number based on index
+                    booktitle: book.booktitle,
+                    author: book.author,
+                    genre: book.genre,
+                    yop: book.yop,
+                    isbn: book.isbn
+                }))
+            };
+        });
+        res.json(state);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to fetch state' });
+    }
+});
+
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('Something went wrong!');
 });
 
 // Start the Server
