@@ -36,7 +36,7 @@ const UserSchema = new mongoose.Schema({
 const User = mongoose.model('User', UserSchema);
 
 // API Endpoints
-app.get('https://donate-a-book-u6j2.onrender.com/api/users', async (req, res) => {
+app.get('/api/users', async (req, res) => {
     try {
         const users = await User.find();
         res.json(users);
@@ -45,7 +45,7 @@ app.get('https://donate-a-book-u6j2.onrender.com/api/users', async (req, res) =>
     }
 });
 
-app.post('https://donate-a-book-u6j2.onrender.com/api/users', async (req, res) => {
+app.post('/api/users', async (req, res) => {
     const { name, phone, email, books } = req.body;
 
     // Validate input
@@ -76,7 +76,7 @@ app.post('https://donate-a-book-u6j2.onrender.com/api/users', async (req, res) =
 });
 
 // Update User Endpoint
-app.put('https://donate-a-book-u6j2.onrender.com/api/users/:id', async (req, res) => {
+app.put('/users/:id', async (req, res) => {
     const { name, phone, email, books } = req.body;
     try {
         const updatedUser = await User.findByIdAndUpdate(
@@ -93,7 +93,7 @@ app.put('https://donate-a-book-u6j2.onrender.com/api/users/:id', async (req, res
     }
 });
 
-app.delete('https://donate-a-book-u6j2.onrender.com/api/users/:userId/books/:bookId', async (req, res) => {
+app.delete('/api/users/:userId/books/:bookId', async (req, res) => {
     try {
         const userId = req.params.userId;
         const bookId = req.params.bookId;
@@ -118,7 +118,7 @@ app.delete('https://donate-a-book-u6j2.onrender.com/api/users/:userId/books/:boo
 
 
 // Endpoint to dump the state
-app.get('https://donate-a-book-u6j2.onrender.com/api/state', async (req, res) => {
+app.get('/api/state', async (req, res) => {
     try {
         const users = await User.find();
         const state = users.map(user => {
