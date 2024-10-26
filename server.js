@@ -76,7 +76,7 @@ app.post('/api/users', async (req, res) => {
 });
 
 // Update User Endpoint
-app.put('/users/:id', async (req, res) => {
+app.put('/api/users/:id', async (req, res) => {
     const { name, phone, email, books } = req.body;
     try {
         const updatedUser = await User.findByIdAndUpdate(
