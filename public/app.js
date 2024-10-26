@@ -34,7 +34,7 @@ $(document).ready(function () {
 
         // Send user data to server
         $.ajax({
-            url: '/api/users',
+            url: 'https://donate-a-book-u6j2.onrender.com/api/users',
             method: 'POST',
             contentType: 'application/json',
             data: JSON.stringify(user),
@@ -129,7 +129,7 @@ $('#bookTable').on('click', '.remove', function () {
 
         // Send delete request to the server
         $.ajax({
-            url: `/api/users/${user._id}/books/${bookId}`, 
+            url: `https://donate-a-book-u6j2.onrender.com/api/users/${user._id}/books/${bookId}`, 
             method: 'DELETE',
             success: function () {
                 console.log("Book successfully deleted from database.");
@@ -158,7 +158,7 @@ function reassignSerialNumbers() {
 // Function to update user on the server
 function updateUserOnServer(user) {
     $.ajax({
-        url: `/api/users/${user._id}`,
+        url: `https://donate-a-book-u6j2.onrender.com/api/users/${user._id}`,
         method: 'PUT',
         contentType: 'application/json',
         data: JSON.stringify(user),
@@ -252,7 +252,7 @@ function refreshBookTable() {
     // Check State Button Click Event
     $('#checkStateButton').click(function () {
         $.ajax({
-            url: `/api/users/${user._id}`,
+            url: `https://donate-a-book-u6j2.onrender.com/api/users/${user._id}`,
             method: 'GET',
             success: function (response) {
                 console.log("Current user state:", JSON.stringify(response, null, 2));
